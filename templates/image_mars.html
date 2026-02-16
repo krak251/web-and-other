@@ -6,8 +6,11 @@
 </head>
 <body>
     <h1>Жди нас, Марс!</h1>
-    <img src="/static/images/mars.png" alt="здесь могла быть ваша реклама" width="220" height="220"
-    <br>
+    <p>
+        <img src="{{ url_for('static', filename='images/mars.png') }}"
+             alt="здесь могла быть ваша реклама"
+             width="440" height="440">
+    </p>
     <p>Вот она какая, красная планета</p>
 </body>
 </html>
