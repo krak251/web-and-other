@@ -104,5 +104,10 @@ def choice_planet(planet_name):
                            beauty=planet_slovar[planet_name]["beauty"])
 
 
+@app.route("/results/<nickname>/<int:level>/<float:rating>")
+def results(nickname, level, rating):
+    return render_template("results.html", nickname=nickname, level=level, rating=rating)
+
+
 if __name__ == "__main__":
     app.run("127.0.0.1", 8080)
