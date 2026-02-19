@@ -10,7 +10,7 @@ def main():
 
 @app.route("/index")
 def index():
-    return "<h1>И на Марсе будут яблони цвести!</h1>"
+    return render_template("base.html", title="Заготовка")
 
 
 @app.route("/promotion")
@@ -111,7 +111,7 @@ def results(nickname, level, rating):
 
 @app.route("/astronaut_selection")
 def astronaut_selection():
-    return render_template("astronaut_selection.html")
+    return render_template("astronaut_selection.html", title="отбор астронавтов")
 
 
 if __name__ == "__main__":
