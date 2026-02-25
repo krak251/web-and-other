@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def main():
-    return "<h1>Миссия Колонизация Марса</h1>"
+    return render_template("main.html")
 
 
 @app.route("/index")
