@@ -114,5 +114,11 @@ def astronaut_selection():
     return render_template("astronaut_selection.html", title="отбор астронавтов")
 
 
+@app.route("/training/<prof>")
+def training(prof):
+    return render_template("training.html", title="", prof=prof)
+
+
+
 if __name__ == "__main__":
     app.run("127.0.0.1", 8080)
