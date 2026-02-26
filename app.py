@@ -119,5 +119,10 @@ def training(prof):
     return render_template("training.html", title="", prof=prof)
 
 
+prof_list = ["пилот", "инженер-исследователь", "инженер-строитель", "врач", "штурман"]
+@app.route("/list_prof/<list1>")
+def list_prof(list1):
+    return render_template("list_prof.html", list=list1, prof_list=prof_list)
+
 if __name__ == "__main__":
     app.run("127.0.0.1", 8080)
