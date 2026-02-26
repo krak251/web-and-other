@@ -3,17 +3,17 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col text-center">
             {% if "инж" in prof or "строит" in prof %}
             <div>
-                <h1 style="text-align: center;">Инженерные тренажеры</h1>
+                <h1 class="text-center">Инженерные тренажеры</h1>
             </div>
             {% else %}
             <div>
-                <h1 style="text-align: center">Научные симуляторы</h1>
+                <h1 class="text-center">Научные симуляторы</h1>
             </div>
             {% endif %}
-            <div>
+            <div class="text-center">
                 {% if "инж" in prof or "строит" in prof %}
                 <img src="{{ url_for('static', filename='images/ing.png') }}" alt="prokleto">
                 {% else %}
