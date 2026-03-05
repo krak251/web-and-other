@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 
 from forms.Login_form import LoginForm
 
@@ -151,6 +151,19 @@ def login():
     if login_form.validate_on_submit():
         return redirect("/")
     return render_template("login.html", form=login_form)
+
+@app.route("/load_photo", methods=['POST', 'GET'])
+def load_photo():
+    if request.method == 'GET':
+        return render_template("load_photo.html")
+    else:
+        f = request.files['file']
+        try:
+            with open("/static/images/temp_file.png", mode="wb") as fili:
+                fili.save(f)
+        except Exception as e:
+            print(e)
+        return render_template("load_photo.html")
 
 if __name__ == "__main__":
     app.run("127.0.0.1", 8080)
