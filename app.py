@@ -1,5 +1,7 @@
 from flask import Flask, render_template, redirect, request
 from data import db_session
+from data.jobs import Jobs
+from data.users import User
 from forms.Login_form import LoginForm
 import flask_wtf
 
@@ -14,7 +16,14 @@ def main():
 
 @app.route("/index")
 def index():
-    return render_template("base.html", title="Заготовка")
+    session = db_session.create_session()
+    result = session.query(Jobs, User).join(
+        User,
+        Jobs.team_leader == User.id
+    )
+    for i in result:
+        print(i)
+    return render_template("index.html", title="Это база", result=result)
 
 
 @app.route("/promotion")
