@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request
-
+from data import db_session
 from forms.Login_form import LoginForm
+import flask_wtf
 
 app = Flask(__name__)
 
@@ -166,4 +167,5 @@ def load_photo():
         return render_template("load_photo.html")
 
 if __name__ == "__main__":
+    db_session.global_init("db/mars_explorer.db")
     app.run("127.0.0.1", 8080)
