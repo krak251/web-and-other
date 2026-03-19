@@ -9,11 +9,8 @@ app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "password1921"
 
+
 @app.route("/")
-def main():
-    return render_template("main.html")
-
-
 @app.route("/index")
 def index():
     session = db_session.create_session()
@@ -21,9 +18,7 @@ def index():
         User,
         Jobs.team_leader == User.id
     )
-    for i in result:
-        print(i)
-    return render_template("index.html", title="Это база", result=result)
+    return render_template("index.html", title="", result=result)
 
 
 @app.route("/promotion")
@@ -133,10 +128,11 @@ def training(prof):
 
 
 prof_list = ["пилот", "инженер-исследователь", "инженер-строитель", "врач", "штурман"]
+
+
 @app.route("/list_prof/<list1>")
 def list_prof(list1):
     return render_template("list_prof.html", list=list1, prof_list=prof_list)
-
 
 
 @app.route("/answer")
@@ -162,6 +158,7 @@ def login():
         return redirect("/")
     return render_template("login.html", form=login_form)
 
+
 @app.route("/load_photo", methods=['POST', 'GET'])
 def load_photo():
     if request.method == 'GET':
@@ -174,6 +171,7 @@ def load_photo():
         except Exception as e:
             print(e)
         return render_template("load_photo.html")
+
 
 if __name__ == "__main__":
     db_session.global_init("db/mars_explorer.db")
