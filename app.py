@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 import flask_wtf
 
 from forms.jobs_form import JobsForm
+from forms.registration_form import RegistrationForm
 
 app = Flask(__name__)
 
@@ -14,6 +15,7 @@ app.config["SECRET_KEY"] = "password1921"
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -141,10 +143,11 @@ def training(prof):
 
 
 prof_list = ["пилот", "инженер-исследователь", "инженер-строитель", "врач", "штурман"]
+
+
 @app.route("/list_prof/<list1>")
 def list_prof(list1):
     return render_template("list_prof.html", list=list1, prof_list=prof_list)
-
 
 
 @app.route("/answer")
@@ -180,6 +183,27 @@ def login():
     return render_template("login.html", form=login_form)
 
 
+@app.route("/registration", methods=["GET", "POST"])
+def registration():
+    registration_form = RegistrationForm()
+    if registration_form.validate_on_submit():
+        db_sess = db_session.create_session()
+        new_user = User()
+        new_user.surname = registration_form.surname.data
+        new_user.name = registration_form.name.data
+        new_user.age = registration_form.age.data
+        new_user.position = registration_form.position.data
+        new_user.speciality = registration_form.speciality.data
+        new_user.address = registration_form.address.data
+        new_user.email = registration_form.email.data
+        new_user.hash_password(registration_form.password.data)
+        db_sess.add(new_user)
+        db_sess.commit()
+        return redirect("/login")
+
+    return render_template("registration.html", form=registration_form, title="Регистрация")
+
+
 @app.route("/logout")
 @login_required
 def logout():
@@ -192,7 +216,6 @@ def logout():
 def add_job():
     jobs_form = JobsForm()
     if jobs_form.validate_on_submit():
-        db_session.global_init("../db/mars_explorer.db")
         db_sess = db_session.create_session()
         new_job = Jobs()
         new_job.job = jobs_form.job.data
@@ -209,7 +232,6 @@ def add_job():
     return render_template("addjob.html", form=jobs_form, title="Adding a job")
 
 
-
 @app.route("/load_photo", methods=['POST', 'GET'])
 def load_photo():
     if request.method == 'GET':
@@ -222,6 +244,7 @@ def load_photo():
         except Exception as e:
             print(e)
         return render_template("load_photo.html")
+
 
 if __name__ == "__main__":
     db_session.global_init("db/mars_explorer.db")
