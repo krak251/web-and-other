@@ -188,7 +188,7 @@ def logout():
 
 
 @app.route("/addjob", methods=["GET", "POST"])
-# @login_required
+@login_required
 def add_job():
     jobs_form = JobsForm()
     if jobs_form.validate_on_submit():
