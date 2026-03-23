@@ -6,6 +6,8 @@ from forms.Login_form import LoginForm
 from flask_login import LoginManager, login_user, login_required, logout_user
 import flask_wtf
 
+from forms.jobs_form import JobsForm
+
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "password1921"
@@ -183,6 +185,29 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route("/addjob", methods=["GET", "POST"])
+# @login_required
+def add_job():
+    jobs_form = JobsForm()
+    if jobs_form.validate_on_submit():
+        db_session.global_init("../db/mars_explorer.db")
+        db_sess = db_session.create_session()
+        new_job = Jobs()
+        new_job.job = jobs_form.job.data
+        new_job.team_leader = jobs_form.team_leader.data
+        new_job.work_size = jobs_form.work_size.data
+        new_job.collaborators = jobs_form.collaborators.data
+        if jobs_form.is_finished.data:
+            new_job.is_finished = 1
+        else:
+            new_job.is_finished = 0
+        db_sess.add(new_job)
+        db_sess.commit()
+        return redirect("/")
+    return render_template("addjob.html", form=jobs_form, title="Adding a job")
+
 
 
 @app.route("/load_photo", methods=['POST', 'GET'])
