@@ -1,25 +1,50 @@
 import requests
+from datetime import datetime
 
-response = requests.get("http://127.0.0.1:8080/api/jobs")
+response = requests.post("http://127.0.0.1:8080/api/jobs", json={"collaborators":"2, 3",
+ "end_date": datetime.now().isoformat(),
+ "is_finished": False,
+ "job":"deployment of residential modules 1 and 2",
+ "start_date": datetime.now().isoformat(),
+ "team_leader":1,
+ "work_size":15})
+if response.status_code == 201:
+    print(response.json())
+else:
+    print(f"{response.status_code} {response.reason}")
+
+response = requests.post("http://127.0.0.1:8080/api/jobs", json={"collaborators":"2, 3",
+ "end_date": datetime.now().isoformat(),
+ "is_finished": False,
+ "job":"deployment of residential modules 1 and 2",
+ "start_date": datetime.now().isoformat(),
+ "team_leader": -1, # тим лидера НЕТ
+ "work_size": 15})
 if response.status_code == 200:
     print(response.json())
 else:
     print(f"{response.status_code} {response.reason}")
 
-response1 = requests.get("http://127.0.0.1:8080/api/jobs/1")
-if response1.status_code == 200:
-    print(response1.json())
+response = requests.post("http://127.0.0.1:8080/api/jobs", json={"collaborators":"2, 3",
+ "end_date": "null", #не подойдёт под datetime
+ "is_finished": False,
+ "job":"deployment of residential modules 1 and 2",
+ "start_date": datetime.now().isoformat(),
+ "team_leader":1,
+ "work_size":15})
+if response.status_code == 200:
+    print(response.json())
 else:
-    print(f"{response1.status_code} {response1.reason}")
+    print(f"{response.status_code} {response.reason}")
 
-response2 = requests.get("http://127.0.0.1:8080/api/jobs/59321")
-if response2.status_code == 200:
-    print(response2.json())
+response = requests.post("http://127.0.0.1:8080/api/jobs", json={"collaborators":"2, 3",
+ "end_date": datetime.now().isoformat(),
+ "is_finished": 220, # инт не пойдёт для буллиена
+ "job":"deployment of residential modules 1 and 2",
+ "start_date": datetime.now().isoformat(),
+ "team_leader":1,
+ "work_size":15})
+if response.status_code == 200:
+    print(response.json())
 else:
-    print(f"{response2.status_code} {response2.reason}")
-
-response3 = requests.get("http://127.0.0.1:8080/api/jobs/sanabi")
-if response3.status_code == 200:
-    print(response3.json())
-else:
-    print(f"{response3.status_code} {response3.reason}")
+    print(f"{response.status_code} {response.reason}")
