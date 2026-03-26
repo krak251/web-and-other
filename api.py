@@ -24,6 +24,21 @@ def jobs():
                 ) for job in jobs_items
             ]
         })
+    elif request.method == "POST":
+        jobs_json = request.get_json()
+        job = Jobs(
+            collaborators=jobs_json["collaborators"],
+            is_finished=jobs_json["is_finished"],
+            end_date=jobs_json["end_date"],
+            start_date=jobs_json["start_date"],
+            job=jobs_json["job"],
+            team_leader=jobs_json["team_leader"],
+            work_size=jobs_json["work_size"]
+        )
+        session = db_session.create_session()
+        job = session.merge(job)
+        session.commit()
+        return jsonify({"id": job.id}), 201
     return jsonify({"error": "Method Not Allowed"}), 405
 
 
