@@ -6,10 +6,13 @@ from forms.Login_form import LoginForm
 from flask_login import LoginManager, login_user, login_required, logout_user
 import flask_wtf
 
+from api import api
+
 from forms.jobs_form import JobsForm
 from forms.registration_form import RegistrationForm
 
 app = Flask(__name__)
+app.register_blueprint(api)
 
 app.config["SECRET_KEY"] = "password1921"
 
@@ -244,6 +247,16 @@ def load_photo():
         except Exception as e:
             print(e)
         return render_template("load_photo.html")
+
+
+@app.route("/jobs", methods=["GET", "POST"])
+def jobs():
+    pass
+
+
+@app.route("/jobs/<id>", methods=["GET", "DELETE", "PUT"])
+def jobs_red(id):
+    pass
 
 
 if __name__ == "__main__":
