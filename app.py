@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, make_response, jsonify
 from data import db_session
 from data.jobs import Jobs
 from data.users import User
@@ -6,13 +6,22 @@ from forms.Login_form import LoginForm
 from flask_login import LoginManager, login_user, login_required, logout_user
 import flask_wtf
 
-from api import api
+from flask_restful import reqparse, abort, Api, Resource
+
+# from api import api
 
 from forms.jobs_form import JobsForm
 from forms.registration_form import RegistrationForm
+from resources.jobs_resources import JobsResource, JobsListResource
+from resources.users_resource import UserResource, UserListResource
 
 app = Flask(__name__)
-app.register_blueprint(api)
+# app.register_blueprint(api)
+api = Api(app)
+api.add_resource(JobsResource, "/api/v2/jobs/<int:jobs_id>")
+api.add_resource(JobsListResource, "/api/v2/jobs")
+api.add_resource(UserResource, "/api/v2/users/<int:user_id>")
+api.add_resource(UserListResource, "/api/v2/users")
 
 app.config["SECRET_KEY"] = "password1921"
 
@@ -257,6 +266,16 @@ def jobs():
 @app.route("/jobs/<id>", methods=["GET", "DELETE", "PUT"])
 def jobs_red(id):
     pass
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.errorhandler(400)
+def bad_request(_):
+    return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 
 if __name__ == "__main__":
